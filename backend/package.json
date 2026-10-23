@@ -1,0 +1,13 @@
+{
+  "name": "agora-alerts-backend",
+  "private": true,
+  "type": "module",
+  "description": "News & Opportunity Alerts pipeline. Core logic runs on Deno (Supabase) and Node 24+.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test --test-reporter=spec \"tests/**/*.test.ts\"",
+    "demo": "node scripts/demoScan.ts"
+  }
+}

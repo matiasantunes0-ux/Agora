@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Agora",
+    "slug": "agora",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0A0D0B",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.agora.app"
+    },
+    "android": {
+      "package": "com.agora.app"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Agora needs access to your photos so you can set a profile picture."
+        }
+      ],
+      "expo-status-bar",
+      "expo-font",
+      "expo-notifications"
+    ]
+  }
+}

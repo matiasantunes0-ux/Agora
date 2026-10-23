@@ -1,0 +1,31 @@
+-- Schedules the scan every 10 minutes. The function itself decides whether to
+-- scan (every tick during market hours, hourly otherwise).
+--
+-- This is an .example because it contains project-specific values. To use it:
+--   1. Replace <PROJECT_REF> and <CRON_SECRET> below.
+--   2. Run it once in the Supabase SQL editor (Dashboard → SQL).
+-- pg_cron and pg_net are free on every Supabase plan.
+
+create extension if not exists pg_cron;
+create extension if not exists pg_net;
+
+-- Keep the secret in Vault rather than in the job definition.
+select vault.create_secret('<CRON_SECRET>', 'scan_cron_secret');
+
+select cron.schedule(
+  'scan-alerts',
+  '*/10 * * * *',
+  $$
+  select net.http_post(
+    url := 'https://<PROJECT_REF>.supabase.co/functions/v1/scan',
+    headers := jsonb_build_object(
+      'Content-Type', 'application/json',
+      'x-cron-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'scan_cron_secret')
+    ),
+    body := '{}'::jsonb,
+    timeout_milliseconds := 120000
+  );
+  $$
+);
+
+-- To stop it:  select cron.unschedule('scan-alerts');
